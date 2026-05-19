@@ -86,18 +86,16 @@ combinedDataFrame['NADAC Per Unit'] = combinedDataFrame['NADAC Per Unit'].astype
 combinedDataFrame['NADAC Per Unit'] = combinedDataFrame["NADAC Per Unit"].map('{:.5f}'.format)
 
 # Corresponding Generic Drug Effective Date: Format to MM/DD/YYYY.
-combinedDataFrame["Corresponding Generic Drug Effective Date"] = \
-    pandas.to_datetime(combinedDataFrame['Corresponding Generic Drug Effective Date'])
-combinedDataFrame["Corresponding Generic Drug Effective Date"] = \
-    combinedDataFrame["Corresponding Generic Drug Effective Date"].dt.strftime('%m/%d/%Y')
+combinedDataFrame['Corresponding Generic Drug Effective Date'] = \
+    pandas.to_datetime(combinedDataFrame['Corresponding Generic Drug Effective Date'], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
 
 # Effective Date: Format to MM/DD/YYYY.
-combinedDataFrame['Effective Date'] = pandas.to_datetime(combinedDataFrame['Effective Date'])
-combinedDataFrame['Effective Date'] = combinedDataFrame['Effective Date'].dt.strftime('%m/%d/%Y')
+combinedDataFrame["Effective Date"] = \
+    pandas.to_datetime(combinedDataFrame["Effective Date"], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
 
 # As of Date: Format to MM/DD/YYYY.
-combinedDataFrame['As of Date'] = pandas.to_datetime(combinedDataFrame['As of Date'])
-combinedDataFrame['As of Date'] = combinedDataFrame['As of Date'].dt.strftime('%m/%d/%Y')
+combinedDataFrame['As of Date'] = \
+    pandas.to_datetime(combinedDataFrame['As of Date'], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
 
 # Output combined file
 combinedDataFrame.to_csv('NADAC_Weekly_Combined_File.csv', index=False)
