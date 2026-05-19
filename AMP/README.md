@@ -1,3 +1,10 @@
+# Average Manufacturer Price (AMP)
+
+## Quarterly Reporting
+
+(AMP Quarterly Data Feed)[https://data.medicaid.gov/dataset/80956a7d-e343-54f3-94a7-45d41b34fc0b]
+
+# Legacy Confluence Documentation
 Created by Unknown User (vwhi), last updated byMahesh Babu Chitradaon23/Apr/26 8:46 AM 2 minute read
 
 
