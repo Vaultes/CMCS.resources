@@ -87,7 +87,6 @@ combinedDataFrame['NDC'] = combinedDataFrame['NDC'].astype(str)
 combinedDataFrame['NDC'] = combinedDataFrame['NDC'].str.rjust(11, "0")
 
 combinedDataFrame['Percent Change'] = combinedDataFrame['Percent Change'].astype(float)
-combinedDataFrame['Percent Change'] = combinedDataFrame['Percent Change']*100
 combinedDataFrame['Percent Change'] = combinedDataFrame["Percent Change"].map('{:.2f}'.format)
 
 combinedDataFrame['Old NADAC Per Unit'] = combinedDataFrame['Old NADAC Per Unit'].astype(float)
