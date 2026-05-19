@@ -75,6 +75,10 @@ inputDataFrame.rename({
 inputDataFrame.insert(7, "Start Date", args.startdate)
 inputDataFrame.insert(8, "End Date", args.enddate)
 
+inputDataFrame['Percent Change'] = inputDataFrame['Percent Change'].astype(float)
+inputDataFrame['Percent Change'] = inputDataFrame['Percent Change']*100
+inputDataFrame['Percent Change'] = inputDataFrame["Percent Change"].map('{:.2f}'.format)
+
 # Reorder the onput columns to match the expected output format.
 Column_Name = ['NDC Description','NDC','Old NADAC Per Unit','New NADAC Per Unit','Classification for Rate Setting','Percent Change','Primary Reason','Start Date','End Date','Effective Date']
 inputDataFrame = inputDataFrame.reindex(columns=Column_Name)
