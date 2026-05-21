@@ -1,7 +1,33 @@
 import argparse
-from collections import defaultdict
 import pathlib
 import pandas
+from collections import defaultdict
+from pydantic import BaseModel, field_validator
+from pandantic import Pandantic
+
+# Define your schema using Pydantic
+class NADACWeeklySchema(BaseModel):
+    NDC: str
+
+    @field_validator("NDC")
+    def eleven_characters(cls, v: str) -> str:
+        if len(v) != 11:
+            raise ValueError("NDC must be 11 characters")
+        return v
+
+# Validation logic using pandantic
+def validateCombinedFile(df: pandas.DataFrame):
+    validator = Pandantic(schema=NADACWeeklySchema)
+
+    # Validate the DataFrame against the schema
+    try:
+        validator.validate(df, errors='raise')
+    except ValueError as e:
+        print(f"Validation error: {e}")
+        exit(1)
+    pass
+
+# BEGIN MAIN SCRIPT
 
 # Command line argument parsing
 parser = argparse.ArgumentParser()
@@ -96,6 +122,8 @@ combinedDataFrame["Effective Date"] = \
 # As of Date: Format to MM/DD/YYYY.
 combinedDataFrame['As of Date'] = \
     pandas.to_datetime(combinedDataFrame['As of Date'], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
+
+validateCombinedFile(combinedDataFrame)
 
 # Output combined file
 combinedDataFrame.to_csv('NADAC_Weekly_Combined_File.csv', index=False)
