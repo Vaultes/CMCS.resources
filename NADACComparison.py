@@ -1,7 +1,13 @@
 import argparse
 from collections import defaultdict
+from datetime import datetime
 import pathlib
 import pandas
+from Shared.ValidateDataFrame import validateDataFrame
+from NADAC.comparison.schema import NADACComparisonSchema
+
+startTime = datetime.now()
+print("Script started at: ", startTime)
 
 # Command line argument parsing
 parser = argparse.ArgumentParser()
@@ -99,9 +105,11 @@ combinedDataFrame['Old NADAC Per Unit'] = combinedDataFrame["Old NADAC Per Unit"
 combinedDataFrame['New NADAC Per Unit'] = combinedDataFrame['New NADAC Per Unit'].astype(float)
 combinedDataFrame['New NADAC Per Unit'] = combinedDataFrame["New NADAC Per Unit"].map('{:.5f}'.format)
 
-combinedDataFrame['Start Date'] = pandas.to_datetime(combinedDataFrame['Start Date'], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
-combinedDataFrame['End Date'] = pandas.to_datetime(combinedDataFrame['End Date'], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
-combinedDataFrame["Effective Date"] = pandas.to_datetime(combinedDataFrame["Effective Date"], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
+combinedDataFrame['Start Date'] = pandas.to_datetime(combinedDataFrame['Start Date'], format='mixed').dt.strftime('%m/%d/%Y')
+combinedDataFrame['End Date'] = pandas.to_datetime(combinedDataFrame['End Date'], format='mixed').dt.strftime('%m/%d/%Y')
+combinedDataFrame["Effective Date"] = pandas.to_datetime(combinedDataFrame["Effective Date"], format='mixed').dt.strftime('%m/%d/%Y')
+
+validateDataFrame(combinedDataFrame, NADACComparisonSchema)
 
 # Export the combined and cormatted file
 combinedDataFrame.to_csv('NADAC_Weekly_Combined_File.csv', index=False)
@@ -110,3 +118,7 @@ combinedDataFrame.to_csv('NADAC_Weekly_Combined_File.csv', index=False)
 print("Processing complete.")
 print("Combined Output: ", combinedRowCount, " rows written to NADAC_Weekly_Combined_File.csv")
 print("Expected Row Count: ", expectedRowCount, " Received: ", combinedRowCount, " Difference: ", expectedRowCount - combinedRowCount)
+
+endTime = datetime.now()
+print("Script finished at: ", endTime)
+print("Total processing time: ", endTime - startTime)

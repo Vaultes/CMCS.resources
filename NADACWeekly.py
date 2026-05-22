@@ -1,11 +1,13 @@
 import argparse
+from datetime import datetime
 import pathlib
 import pandas
 from collections import defaultdict
 from Shared.ValidateDataFrame import validateDataFrame
 from NADAC.weekly.schema import NADACWeeklySchema
 
-# BEGIN MAIN SCRIPT
+startTime = datetime.now()
+print("Script started at: ", startTime)
 
 # Command line argument parsing
 parser = argparse.ArgumentParser()
@@ -113,3 +115,7 @@ combinedDataFrame.to_csv('NADAC_Weekly_Combined_File.csv', index=False)
 print("Processing complete.")
 print("Combined Output: ", combinedRowCount, " rows written to NADAC_Weekly_Combined_File.csv")
 print("Expected Row Count: ", expectedRowCount, " Received: ", combinedRowCount, " Difference: ", expectedRowCount - combinedRowCount)
+
+endTime = datetime.now()
+print("Script finished at: ", endTime)
+print("Total processing time: ", endTime - startTime)
