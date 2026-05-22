@@ -29,7 +29,7 @@ pip --version
 # If the above returns a string ex: pip 25.1.1 from...
 #   continue to the next step. Otherwise, verify the venv is active in the terminal
 
-pip install pandas openpyxl, pandantic
+pip install pandas openpyxl pandantic
 
 # If pip requests an update feel free to upgrade pip. Ex:
 # [notice] A new release of pip is available: 25.1.1 -> 26.1.1

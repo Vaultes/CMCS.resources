@@ -1,9 +1,5 @@
 # NADAC (National Average Drug Aquisition Cost)
 
-## Necessary Dependencies
-* pandas (python3 -m pip install pandas)
-* openpyxl (python3 -m pip install openpyxl)
-
 ## Weekly Updated Date Feed
 
 [Weekly NADAC Feed URL](https://data.medicaid.gov/dataset/fbb83258-11c7-47f5-8b18-5f8e79f7e704#data-table)
@@ -15,7 +11,7 @@ The command below shows how to execute the Weekly NADAC file. The input Excel fi
 *Note:* The following assumes a Python virtual environment has been created and the dependencies listed above have been installed.
 
 ```
-python3 .\NADACWeekly.py -i .\sample.files\20260506_NADAC_Weekly.xlsx -p .\sample.files\nadac-national-average-drug-acquisition-cost-05-13-2026.csv -d 05/19/2026
+python3 .\NADACWeekly.py -i .\sample.files\NADAC.weekly.sample.data.xlsx -p .\sample.files\NADAC.weekly.production.sample.data.csv -d 05/19/2026
 ```
 
 ### Script Output
