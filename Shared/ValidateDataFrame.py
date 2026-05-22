@@ -1,6 +1,7 @@
 from pandantic import Pandantic
 import pandas
 
+# Need to make this a parameter/flag that can be passed in.
 log = False
 
 # Validation logic using pandantic
@@ -8,8 +9,9 @@ def validateDataFrame(df: pandas.DataFrame, targetSchema):
     validator = Pandantic(schema=targetSchema)
 
     if log:
-        invalid = validator.validate(df, errors='log')
-        print(invalid)
+        valid = validator.validate(df, errors='log')
+        diff = pandas.concat([df, valid]).drop_duplicates(keep=False)
+        print(diff)
 
     # Validate the DataFrame against the schema
     try:
