@@ -1,7 +1,11 @@
 import argparse
-from collections import defaultdict
 import pathlib
 import pandas
+from collections import defaultdict
+from Shared.ValidateDataFrame import validateDataFrame
+from NADAC.weekly.schema import NADACWeeklySchema
+
+# BEGIN MAIN SCRIPT
 
 # Command line argument parsing
 parser = argparse.ArgumentParser()
@@ -81,21 +85,26 @@ combinedRowCount = len(combinedDataFrame)
 combinedDataFrame['NDC'] = combinedDataFrame['NDC'].astype(str)
 combinedDataFrame['NDC'] = combinedDataFrame['NDC'].str.rjust(11, "0")
 
+# Set Column Types:
+combinedDataFrame['Corresponding Generic Drug NADAC Per Unit'] = combinedDataFrame['Corresponding Generic Drug NADAC Per Unit'].astype(float)
+
 # NADAC Per Unit: 5 decimal places.
 combinedDataFrame['NADAC Per Unit'] = combinedDataFrame['NADAC Per Unit'].astype(float)
 combinedDataFrame['NADAC Per Unit'] = combinedDataFrame["NADAC Per Unit"].map('{:.5f}'.format)
 
 # Corresponding Generic Drug Effective Date: Format to MM/DD/YYYY.
 combinedDataFrame['Corresponding Generic Drug Effective Date'] = \
-    pandas.to_datetime(combinedDataFrame['Corresponding Generic Drug Effective Date'], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
+    pandas.to_datetime(combinedDataFrame['Corresponding Generic Drug Effective Date'], format='mixed').dt.strftime('%m/%d/%Y')
 
 # Effective Date: Format to MM/DD/YYYY.
 combinedDataFrame["Effective Date"] = \
-    pandas.to_datetime(combinedDataFrame["Effective Date"], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
+    pandas.to_datetime(combinedDataFrame["Effective Date"], format='mixed').dt.strftime('%m/%d/%Y')
 
 # As of Date: Format to MM/DD/YYYY.
 combinedDataFrame['As of Date'] = \
-    pandas.to_datetime(combinedDataFrame['As of Date'], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
+    pandas.to_datetime(combinedDataFrame['As of Date'], format='mixed').dt.strftime('%m/%d/%Y')
+
+validateDataFrame(combinedDataFrame, NADACWeeklySchema)
 
 # Output combined file
 combinedDataFrame.to_csv('NADAC_Weekly_Combined_File.csv', index=False)
