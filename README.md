@@ -35,3 +35,30 @@ pip install pandas openpyxl pandantic
 # [notice] A new release of pip is available: 25.1.1 -> 26.1.1
 # [notice] To update, run: pip install --upgrade pip
 ```
+
+## Layout and Conventions
+
+### Top-Level Scripts
+
+The per-feed top-level file is the entry point for processing that feed. These files contain the logic to load, and format, the various feeds.
+
+|__ CMCS.resources
+    |-- NADACWeekly.py
+    |-- NADACComparison.py
+    |-- APMQuarterly.py
+    |-- AMPMonthly.py
+    |-- ...
+
+### Per-Feed Folder
+
+Each feed should have a top-level folder. These folders contain the feed-specific collateral required to test and validate each feed.
+
+|__ NADAC
+    |__ weekly
+        |-- schema.py # This file contains the pydantic schema for the feed.
+        |__ files # This folder contains the sample data used for testing and validation.
+            |-- production.sample.data.csv
+            |-- new.sample.data.csv
+    |__ comparison
+    |__ ...
+    
