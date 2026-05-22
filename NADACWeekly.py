@@ -5,8 +5,6 @@ from collections import defaultdict
 from Shared.ValidateDataFrame import validateDataFrame
 from NADAC.weekly.schema import NADACWeeklySchema
 
-# BEGIN MAIN SCRIPT
-
 # Command line argument parsing
 parser = argparse.ArgumentParser()
 

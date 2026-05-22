@@ -2,6 +2,8 @@ import argparse
 from collections import defaultdict
 import pathlib
 import pandas
+from Shared.ValidateDataFrame import validateDataFrame
+from NADAC.comparison.schema import NADACComparisonSchema
 
 # Command line argument parsing
 parser = argparse.ArgumentParser()
@@ -99,9 +101,11 @@ combinedDataFrame['Old NADAC Per Unit'] = combinedDataFrame["Old NADAC Per Unit"
 combinedDataFrame['New NADAC Per Unit'] = combinedDataFrame['New NADAC Per Unit'].astype(float)
 combinedDataFrame['New NADAC Per Unit'] = combinedDataFrame["New NADAC Per Unit"].map('{:.5f}'.format)
 
-combinedDataFrame['Start Date'] = pandas.to_datetime(combinedDataFrame['Start Date'], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
-combinedDataFrame['End Date'] = pandas.to_datetime(combinedDataFrame['End Date'], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
-combinedDataFrame["Effective Date"] = pandas.to_datetime(combinedDataFrame["Effective Date"], format='%m/%d/%Y').dt.strftime('%m/%d/%Y')
+combinedDataFrame['Start Date'] = pandas.to_datetime(combinedDataFrame['Start Date'], format='mixed').dt.strftime('%m/%d/%Y')
+combinedDataFrame['End Date'] = pandas.to_datetime(combinedDataFrame['End Date'], format='mixed').dt.strftime('%m/%d/%Y')
+combinedDataFrame["Effective Date"] = pandas.to_datetime(combinedDataFrame["Effective Date"], format='mixed').dt.strftime('%m/%d/%Y')
+
+validateDataFrame(combinedDataFrame, NADACComparisonSchema)
 
 # Export the combined and cormatted file
 combinedDataFrame.to_csv('NADAC_Weekly_Combined_File.csv', index=False)
