@@ -20,6 +20,7 @@ parser.add_argument("-i","--input", help="Path to the NADAC Comparison Excel (.x
 parser.add_argument("-p","--prodExport", help="Path to the exported production CSV file", type=pathlib.Path, required=True) 
 parser.add_argument("-sd","--startdate", help="Start Date in MM/DD/YYYY format", type=str, required=True)
 parser.add_argument("-ed","--enddate", help="End Date in MM/DD/YYYY format", type=str, required=True)
+parser.add_argument("-v","--verbose", help="Increase output verbosity", action="store_true", required=False, default=False)
 
 args = parser.parse_args()
 
@@ -109,7 +110,7 @@ combinedDataFrame['Start Date'] = pandas.to_datetime(combinedDataFrame['Start Da
 combinedDataFrame['End Date'] = pandas.to_datetime(combinedDataFrame['End Date'], format='mixed').dt.strftime('%m/%d/%Y')
 combinedDataFrame["Effective Date"] = pandas.to_datetime(combinedDataFrame["Effective Date"], format='mixed').dt.strftime('%m/%d/%Y')
 
-validateDataFrame(combinedDataFrame, NADACComparisonSchema)
+validateDataFrame(combinedDataFrame, NADACComparisonSchema, args.verbose)
 
 # Export the combined and cormatted file
 combinedDataFrame.to_csv('NADAC_Weekly_Combined_File.csv', index=False)

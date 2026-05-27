@@ -22,6 +22,7 @@ parser.add_argument("-i","--input", help="Path to the Weekly NADAC Excel (.xlsx)
 parser.add_argument("-p","--prodExport", help="Path to the exported production CSV file", type=pathlib.Path, required=True) 
 parser.add_argument("-y","--year", help="Current year in YYYY format", type=str, required=True)
 parser.add_argument("-m","--month", help="Current month in MM format", type=str, required=True)
+parser.add_argument("-v","--verbose", help="Increase output verbosity", action="store_true", required=False, default=False)
 
 args = parser.parse_args()
 
@@ -89,7 +90,7 @@ combinedDataFrame['Year'] = combinedDataFrame['Year'].astype(str)
 
 combinedRowCount = len(combinedDataFrame)
 
-validateDataFrame(combinedDataFrame, AMPMonthlySchema)
+validateDataFrame(combinedDataFrame, AMPMonthlySchema, args.verbose)
 
 # Export as CSV
 combinedDataFrame.to_csv('AMP_Monthly_Combined_File.csv', index=False, encoding = 'utf-8-sig')

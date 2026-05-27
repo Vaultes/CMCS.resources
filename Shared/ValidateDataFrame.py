@@ -5,10 +5,10 @@ import pandas
 log = False
 
 # Validation logic using pandantic
-def validateDataFrame(df: pandas.DataFrame, targetSchema):
+def validateDataFrame(df: pandas.DataFrame, targetSchema, verbose: bool = False):
     validator = Pandantic(schema=targetSchema)
 
-    if log:
+    if verbose:
         valid = validator.validate(df, errors='log')
         diff = pandas.concat([df, valid]).drop_duplicates(keep=False)
         print(diff)
