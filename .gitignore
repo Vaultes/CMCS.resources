@@ -1,3 +1,5 @@
 **/__pycache__/
-AMP/monthly/files/DrugAMPReportingMonthly022026.csv
-AMP/quarterly/files/DrugAMPReportingQuarterly1Q2026.csv
+AMP/monthly/files/DrugAMPReportingMonthly*.csv
+AMP/quarterly/files/DrugAMPReportingQuarterly*.csv
+NADAC/first.time/files/first-time-nadac-rates-*.csv
+NADAC/firstTime/files/first-time-nadac-rates-*.csv
