@@ -19,6 +19,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-i","--input", help="Path to the Weekly NADAC Excel (.xlsx) file", type=pathlib.Path, required=True) 
 parser.add_argument("-p","--prodExport", help="Path to the exported production CSV file", type=pathlib.Path, required=True) 
 parser.add_argument("-d","--asofdate", help="As of Date in MM/DD/YYYY format", type=str, required=True)
+parser.add_argument("-v","--verbose", help="Increase output verbosity", action="store_true", required=False, default=False)
 
 args = parser.parse_args()
 
@@ -106,7 +107,7 @@ combinedDataFrame["Effective Date"] = \
 combinedDataFrame['As of Date'] = \
     pandas.to_datetime(combinedDataFrame['As of Date'], format='mixed').dt.strftime('%m/%d/%Y')
 
-validateDataFrame(combinedDataFrame, NADACWeeklySchema)
+validateDataFrame(combinedDataFrame, NADACWeeklySchema, args.verbose)
 
 # Output combined file
 combinedDataFrame.to_csv('NADAC_Weekly_Combined_File.csv', index=False)

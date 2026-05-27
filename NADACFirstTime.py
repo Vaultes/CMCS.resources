@@ -19,6 +19,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-i","--input", help="Path to the Weekly NADAC Excel (.xlsx) file", type=pathlib.Path, required=True) 
 parser.add_argument("-p","--prodExport", help="Path to the exported production CSV file", type=pathlib.Path, required=True) 
 parser.add_argument("-d","--asofdate", help="As of Date in MM/DD/YYYY format", type=str, required=True)
+parser.add_argument("-v","--verbose", help="Increase output verbosity", action="store_true", required=False, default=False)
 
 args = parser.parse_args()
 
@@ -75,7 +76,7 @@ combinedDataFrame['As of Date'] = \
 # Column Data Types
 combinedDataFrame['Package Size'] = combinedDataFrame['Package Size'].astype(str)
 
-validateDataFrame(combinedDataFrame, NADACFirstTimeSchema)
+validateDataFrame(combinedDataFrame, NADACFirstTimeSchema, args.verbose)
 
 # Output combined file
 combinedDataFrame.to_csv('NADAC_First_Time_Combined_File.csv', index=False)
