@@ -1,8 +1,7 @@
 # Define your schema using Pydantic
-from datetime import date
+from datetime import datetime
 import math
 from pydantic import BaseModel, Field, field_validator
-from typing import Literal
 
 class NADACComparisonSchema(BaseModel):
     # Forbid extra fields not defined in the schema
@@ -17,9 +16,9 @@ class NADACComparisonSchema(BaseModel):
     Classification_for_Rate_Setting: str = Field(alias="Classification for Rate Setting")
     Percent_Change: float = Field(alias="Percent Change")
     Primary_Reason: str | None = Field(alias="Primary Reason")
-    Start_Date: date = Field(alias="Start Date")
-    End_Date: date = Field(alias="End Date")
-    Effective_Date: date | None = Field(alias="Effective Date")
+    Start_Date: datetime = Field(alias="Start Date")
+    End_Date: datetime = Field(alias="End Date")
+    Effective_Date: datetime | None = Field(alias="Effective Date")
     
     # Clean up 'nan' values. Convert to 'None' for optional fields.
     @field_validator("Effective_Date", "Primary_Reason", mode="before")
@@ -45,21 +44,21 @@ class NADACComparisonSchema(BaseModel):
         return v
 
     @field_validator('Effective_Date', mode='before')
-    def parse_custom_date_with_NaN(cls, v: date | None):
+    def parse_custom_date_with_NaN(cls, v: datetime | None):
         if v is None:
             return v
         if isinstance(v, float) and math.isnan(v):
             return v
         if isinstance(v, str):
             # Parse from "MM/DD/YYYY" to a date object
-            return date.strptime(v, "%m/%d/%Y")
+            return datetime.strptime(v, "%m/%d/%Y")
         return v
 
     @field_validator('Start_Date', 'End_Date', mode='before')
-    def parse_custom_date(cls, v: date):
+    def parse_custom_date(cls, v: datetime):
         if isinstance(v, float) and math.isnan(v):
             return v
         if isinstance(v, str):
             # Parse from "MM/DD/YYYY" to a date object
-            return date.strptime(v, "%m/%d/%Y")
+            return datetime.strptime(v, "%m/%d/%Y")
         return v
