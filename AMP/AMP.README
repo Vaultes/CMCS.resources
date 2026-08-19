@@ -1,1 +1,43 @@
+This is the current workflow for updating Monthly and Quarterly data on data.medicaid.
+This script reduces the steps for uploading from 11 complicated steps to 6 much easier steps. 
 
+AMP data is a list of active drugs along with an indication of whether the drug manufacturers reported the average manufacturer prices (AMP) for each drug. CMS compiles these lists both monthly and quarterly. The task here is to appended a new dataset onto the dataset in production. Monthly and quarterly data uploads are separate tickets.
+Publishing AMP data requires the following steps:
+
+ 
+Prerequisites
+1.	Login credentials for data.medicaid.gov and medicaid.gov with publishing or admin rights.
+2.	Excel installed on your local computer. 
+3.	Latest AMP data files. Each month, these files will be available as attachments to a Jira ticket. 
+4.	The latest production AMP files, downloaded from data.medicaid.gov
+5.	Ability to execute a Python script.
+
+Step 1: Prepare Data for Load into DKAN
+Both the monthly and the quarterly data are provided as a ZIP file that contains one Excel file. The process is the same for both.
+Download Jira and production files
+1.	Download these python scripts from github: Amp_Monthly.py; AMPQuarterly.py and put them in a folder where you will always run Python scripts.
+2.	Download the Jira ticket files into the folder where you will run your Python script.
+3.	Download the current AMP monthly and quarterly datasets from data.medicaid (for Monthly: https://data.medicaid.gov/dataset/91d4309d-3ca8-5a1e-8f78-79984027392d and quarterly: https://data.medicaid.gov/dataset/80956a7d-e343-54f3-94a7-45d41b34fc0b.
+4.	Put all the prod file and Jira ticket files in the file where you will run your script. NOTE: It is best if you clear out previous AMP Monthly/Quarterly files, although the script will detect old files and tell you to remove them.
+
+AMP MONTHLY
+1.	Run Amp_Monthly.py script. It will find your new Jira file and your prod file, and will combine them into a new file named: DrugAMPReportingMonthlyMMYYYY.csv It will correctly name the file each month based on the month/year of the Jira file. Here is an example of what the output will say:
+Using xlsx file: 062026_MonthlyAMP_RNR.xlsx
+Using prod CSV:  DrugAMPReportingMonthly062026.csv
+Detected month/year: 06/2026
+Combined 3494275 existing rows with 46656 new rows -> DrugAMPReportingMonthly062026.csv4
+     2. Make sure the file name is: DrugAMPReportingMonthlyMMYYY.csv. Now login to https://control.akamai.com, and upload the file into netstorage
+
+AMP QUARTERLY
+1.	Run AMPQuarterly.py script. It will find your new Jira file, your prod file and combine them into a new file named: DrugAMPReportingQuarterly-MQYYYY.csv It will correctly name the file each month based on the month/year of the Jira file. Here is an example of what the output will say:
+Using xlsx file: 2Q2026AMPPR-NRFile2Q2026.xlsx
+Using prod CSV:  DrugAMPReportingQuarterly-1q2026.csv
+Detected quarter/year: Q2 2026
+Combined 2,126,520 existing rows with 47,538 new rows -> DrugAMPReportingQuarterly-2Q2026.csv
+Total rows in DrugAMPReportingQuarterly-2Q2026.csv: 2,174,05
+2. Make sure the file name is: DrugAMPReportingQuarterly-MQYYYY.csv. Now login to https://control.akamai.com, and upload the file into netstorage.
+
+Step 2: Load Data into DKAN
+1.	Go to https://edit.data.medicaid.gov/user. You must have publish or admin rights.
+2.	Now login to https://edit.data.medicaid.gov/user, traverse to the "Drug AMP Reporting - Monthly" dataset and update the dataset with the new file that is uploaded in Akamai. You will do the same with "Drug AMP Reporting - Quarterly".
+3.	Change the last updated date to today's date and publish the content.
