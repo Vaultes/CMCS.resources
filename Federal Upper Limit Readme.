@@ -1,0 +1,3 @@
+This script takes the input file from Jira and swaps the last two rows (month/year) to the correct order and then combines it with the larger production dataset into a new CSV file. 
+The script calls for inputing: [-h] -i INPUT -p PRODEXPORT [-o OUTPUT] [-s SHEET] [--dedupe] This means that you must supply the input file name and the production file name. You may input an output file name if you prefer. (See No. 3)
+The new output file will be named 'aca-federal-upper-limits-08272026.csv' The date on the new file will be the date you ran the script. If you want a different date, fill out -o when you run the script.
