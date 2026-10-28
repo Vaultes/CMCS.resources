@@ -1,0 +1,5 @@
+These two scripts create the State Policy Action Map and accompanying table on the Rural Health State Data Maps page.
+Needed files for map script: RHTP SPA Commitments.xlsx -- or rename the file in the script
+This script creates the json file with solid bullets and indented open bullets.
+The json map file it creates will be named "svg-map-spa-rhtp.json"
+FOR THE TABLE: Input file is -i "RHTP SPA Commitments.xlsx"; output file is -o spa-table.json
