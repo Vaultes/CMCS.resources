@@ -1,0 +1,5 @@
+This script creates an SVG map for a new OBA map with compliance data.
+Input file needed: ks_is_red_Medicaid_gov_Compliance_Mock-up_Data.xlsx")
+SHEET_NAME  = "OBA Data"
+JSON_FILE   = "svg-default-2023.json"
+OUTPUT_FILE = "svg-map-oba.json"
