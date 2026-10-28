@@ -1,0 +1,4 @@
+These scripts create the SVG map/table on the RHTP State Data Maps page called RHTP Funding. This map will be updated quarterly.
+Files needed for map: rhtp-funding.xlsx, "svg-default-2023 copy.json"
+Output file is "svg-map1-funding.json"
+The table script will find an xlsx file with rhtp funding in the name
