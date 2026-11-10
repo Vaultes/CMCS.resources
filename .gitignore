@@ -3,3 +3,5 @@ AMP/monthly/files/DrugAMPReportingMonthly*.csv
 AMP/quarterly/files/DrugAMPReportingQuarterly*.csv
 NADAC/first.time/files/first-time-nadac-rates-*.csv
 NADAC/firstTime/files/first-time-nadac-rates-*.csv
+.DS_Store
+venv/

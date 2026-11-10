@@ -5,6 +5,7 @@ import pandas
 from collections import defaultdict
 from Shared.ValidateDataFrame import validateDataFrame
 from NADAC.weekly.schema import NADACWeeklySchema
+from Shared.Prompts import prompt_for_file, prompt_for_date, prompt_for_output
 
 startTime = datetime.now()
 print("Script started at: ", startTime)
@@ -16,12 +17,33 @@ parser = argparse.ArgumentParser()
 #   - NADAC .xlsx file
 #   - Production CSV file
 #   - As of Date in YYYYMMDD format
-parser.add_argument("-i","--input", help="Path to the Weekly NADAC Excel (.xlsx) file", type=pathlib.Path, required=True) 
-parser.add_argument("-p","--prodExport", help="Path to the exported production CSV file", type=pathlib.Path, required=True) 
-parser.add_argument("-d","--asofdate", help="As of Date in MM/DD/YYYY format", type=str, required=True)
+parser.add_argument("-i","--input", help="Path to the Weekly NADAC Excel (.xlsx) file", type=pathlib.Path) 
+parser.add_argument("-p","--prodExport", help="Path to the exported production CSV file", type=pathlib.Path) 
+parser.add_argument("-d","--asofdate", help="As of Date in MM/DD/YYYY format", type=str)
+parser.add_argument("-o","--output", help="Path for the combined output CSV file", type=pathlib.Path)
 parser.add_argument("-v","--verbose", help="Increase output verbosity", action="store_true", required=False, default=False)
 
 args = parser.parse_args()
+
+# If any required inputs are missing, we're in "interactive" mode and will prompt for them
+interactive = (args.input is None or args.prodExport is None
+               or args.asofdate is None)
+
+# Prompt for anything not provided on the command line
+if args.input is None:
+    args.input = prompt_for_file("Weekly NADAC Excel file (.xlsx)", ".xlsx")
+if args.prodExport is None:
+    args.prodExport = prompt_for_file("Production export file (.csv)", ".csv")
+if args.asofdate is None:
+    args.asofdate = prompt_for_date("As of Date")
+
+# Output location: ask only in interactive mode, otherwise use the default
+DEFAULT_OUTPUT = "NADAC_Weekly_Combined_File.csv"
+if args.output is None:
+    if interactive:
+        args.output = prompt_for_output(DEFAULT_OUTPUT)
+    else:
+        args.output = pathlib.Path(DEFAULT_OUTPUT)
 
 # Sanity Check
 print("Parsing input file: ", args.input)
@@ -110,11 +132,11 @@ combinedDataFrame['As of Date'] = \
 validateDataFrame(combinedDataFrame, NADACWeeklySchema, args.verbose)
 
 # Output combined file
-combinedDataFrame.to_csv('NADAC_Weekly_Combined_File.csv', index=False)
+combinedDataFrame.to_csv(args.output, index=False)
 
 # Output Results
 print("Processing complete.")
-print("Combined Output: ", combinedRowCount, " rows written to NADAC_Weekly_Combined_File.csv")
+print("Combined Output: ", combinedRowCount, " rows written to ", args.output)
 print("Expected Row Count: ", expectedRowCount, " Received: ", combinedRowCount, " Difference: ", expectedRowCount - combinedRowCount)
 
 endTime = datetime.now()
